@@ -1,0 +1,12 @@
+docker run --rm \
+  -v $(pwd)/raw_data:/data:ro \
+  -v $(pwd)/filtered_data:/filtered \
+  -v $(pwd)/results:/output \
+  -v $(pwd)/scripts:/scripts \
+  dada2_pipeline \
+  Rscript /scripts/dada2_script.R
+
+docker build -f $dockerfile -t dockerimage_id
+
+docker compose up --rm dada2_pipeline
+

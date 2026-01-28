@@ -1,0 +1,29 @@
+services:
+  db_downloader:
+    image: alpine
+    volumes:
+      - db_data:/ref_db
+    command: >
+      sh -c "if [ ! -f /ref_db/silva.fa ]; then 
+      echo 'Downloading SILVA...';
+      wget -qO- https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz | gunzip > /ref_db/silva.fa; 
+      fi"
+
+  dada2_analysis:
+    build: . # Points to your Dockerfile directory
+    image: test_new_image_02:latest
+    depends_on:
+      db_downloader:
+        condition: service_completed_successfully
+    volumes:
+      - ./scripts:/scripts
+      - ./raw_data:/data:ro
+      - db_data:/ref_db:ro  # Using a managed volume for speed during intermediate steps: SILVA weights 600Mb roughly
+      - ./results:/output
+      - intermediate_data:/intermediate_results # Using a managed volume for speed during intermediate steps
+      - ./config.json:/scripts/config.json:ro
+    command: Rscript /scripts/script_16s_dada2.r
+
+volumes:
+  db_data:      # Persists the database across runs -> stores taxonomy database
+  intermediate_data: # Fast I/O for R processing -> stores error_rates

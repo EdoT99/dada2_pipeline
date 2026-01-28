@@ -1,0 +1,7 @@
+raw_data/
+database/
+intermediates/
+results/
+db_data/
+intermediate_data/
+*.log

@@ -1,0 +1,7 @@
+{
+  "threads": 8,
+  "max_ee": [2, 5],
+  "trunc_len": [240, 160],
+  "taxa_db": "/ref_db/silva.fa",
+  "sample_names": ["S1", "S2", "S3"]
+}
