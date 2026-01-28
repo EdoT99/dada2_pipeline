@@ -1,3 +1,4 @@
+# exclude the following directories
 raw_data/
 database/
 intermediates/
@@ -5,3 +6,6 @@ results/
 db_data/
 intermediate_data/
 *.log
+
+# exclude for now
+dockerfile_dada2_embedded
